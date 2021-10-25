@@ -32,7 +32,7 @@ int main(void){
 	l = NULL;
 	printf("estVide(l) = %s\n",estVide(l)?"TRUE":"FALSE");
 
-	l = ajoutTete("!",l);
+	/*l = ajoutTete("!",l);
 	l = ajoutTete("!",l);
 	l = ajoutTete("!",l);
 	l = ajoutTete("Jedi",l);
@@ -42,7 +42,7 @@ int main(void){
 
 	afficheListe_i(l);
 
-	detruire_r(l);
+	detruire_r(l);*/
 
 	return EXIT_SUCCESS;
 }

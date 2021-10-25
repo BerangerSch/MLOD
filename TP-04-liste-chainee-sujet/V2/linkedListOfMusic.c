@@ -38,7 +38,14 @@ void afficheListe_i(Liste l) {
 	Liste p = l;
 
 	while(!estVide(p)){
-		afficheElement(p->name, p->artist, p->album, p->genre, p->discNumber, p->trackNumber, p->year);
+		afficheElement(l->name);
+		afficheElement(l->artist);
+		afficheElement(l->album);
+		afficheElement(l->genre);
+		afficheElement(l->discNumber);
+		afficheElement(l->trackNumber);
+		afficheElement(l->year);
+		printf("\n");
 		p=p->suiv;
 	}
 	printf("\n");
@@ -47,7 +54,14 @@ void afficheListe_i(Liste l) {
 // version recursive
 void afficheListe_r(Liste l) {
 	if (!estVide(l)){
-		afficheElement(l->name, l->artist, l->album, l->genre, l->discNumber, l->trackNumber, l->year);
+		afficheElement(l->name);
+		afficheElement(l->artist);
+		afficheElement(l->album);
+		afficheElement(l->genre);
+		afficheElement(l->discNumber);
+		afficheElement(l->trackNumber);
+		afficheElement(l->year);
+		printf("\n");
 		afficheListe_r(l->suiv);
 	}else{
 		printf("\n");
@@ -98,7 +112,7 @@ Liste ajoutFin_i(Element name, Element artist, Element album, Element genre, Ele
 // version recursive
 Liste ajoutFin_r(Element name, Element artist, Element album, Element genre, Element discNumber, Element trackNumber, Element year, Liste l) {
 	if(estVide(l)){
-		return creer(v);
+		return creer(name, artist, album, genre, discNumber, trackNumber, year);
 	}else{
 		l->suiv = ajoutFin_r(v, l->suiv);
 	}
@@ -109,35 +123,35 @@ Liste ajoutFin_r(Element name, Element artist, Element album, Element genre, Ele
 
 // Retourne un pointeur sur l'élément de la liste l contenant la valeur v ou NULL
 // version itérative
-Liste cherche_i(Element v,Liste l) {
+Liste cherche_i(Element name, Element artist, Element album, Liste l) {
 	Liste p = l;
-	while(!estVide(p) && !equalsElement(v,p->val)){
+	while(!estVide(p) && (!equalsElement(name, p->name) && !equalsElement(artist, p->artist) && !equalsElement(album, p->album))){
 		p=p->suiv;
 	}
-	// p==NULL || p->val==v
+	// p==NULL || (p->name==name && p->artist==artist && p->album==album)
 	return p;
 }
 
 // version récursive
-Liste cherche_r(Element v,Liste l) {
-	if(estVide(l) || equalsElement(v, l->val)){
+Liste cherche_r(Element name, Element artist, Element album, Liste l) {
+	if(estVide(l) || (equalsElement(name, l->name) && equalsElement(artist, l->artist) && equalsElement(album, l->album))){
 		return l;
 	}
 	else{
-		return cherche_r(v, l->suiv);
+		return cherche_r(name, artist, album, l->suiv);
 	}
 }
 
 // Retourne la liste modifiée dans la laquelle le premier élément ayant la valeur v a été supprimé
 // ne fait rien si aucun élément possède cette valeur
 // version itérative
-Liste retirePremier_i(Element v, Liste l) {
+Liste retirePremier_i(Element name, Element artist, Element album, Liste l) {
 	Liste precedent, p;
 
 	if(estVide(l)){
 		return l;
 	}
-	if(equalsElement(l->val, v)){
+	if(equalsElement(name, l->name) && equalsElement(artist, l->artist) && equalsElement(album, l->album)){
 		p = l->suiv;
 		l->suiv = NULL;
 		detruire_r(l);
@@ -146,7 +160,7 @@ Liste retirePremier_i(Element v, Liste l) {
 
 	precedent = l;
 	p = l->suiv;
-	while(!estVide(p) && !equalsElement(p->val, v)){
+	while(!estVide(p) && (!equalsElement(name, p->name) && !equalsElement(artist, p->artist) && !equalsElement(album, p->album))){
 		precedent = p;
 		p = p->suiv;
 	}
@@ -160,18 +174,18 @@ Liste retirePremier_i(Element v, Liste l) {
 
 
 // version recursive
-Liste retirePremier_r(Element v, Liste l) {
+Liste retirePremier_r(Element name, Element artist, Element album, Liste l) {
 	if(estVide(l)){
 		return l;
 	}
-	if(equalsElement(l->val, v)){
+	if(equalsElement(name, l->name) && equalsElement(artist, l->artist) && equalsElement(album, l->album)){
 		Liste p = l->suiv;
 		l->suiv = NULL;
 		detruire_r(l);
 		return p;
 	}
 
-	l->suiv = retirePremier_r(v, l->suiv);
+	l->suiv = retirePremier_r(name, artist, album, l->suiv);
 	return l;
 }
 
@@ -180,8 +194,14 @@ void afficheEnvers_r(Liste l) {
 	if(!estVide(l)){
 		if(!estVide(l->suiv)){
 			afficheEnvers_r(l->suiv);
-		afficheElement(l->val);
-		printf(" ");
+		afficheElement(l->name);
+		afficheElement(l->artist);
+		afficheElement(l->album);
+		afficheElement(l->genre);
+		afficheElement(l->discNumber);
+		afficheElement(l->trackNumber);
+		afficheElement(l->year);
+		printf("\n");
 		}
 	}
 }
