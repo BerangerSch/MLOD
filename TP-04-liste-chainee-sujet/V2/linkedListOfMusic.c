@@ -29,45 +29,33 @@ Liste ajoutTete(Element name, Element artist, Element album, Element genre, Elem
 }
 
 
-// affiche tous les éléments de la liste l
-// Attention, cette fonction doit être indépendante du type des éléments de la liste
-// utiliser une fonction annexe affiche_element
-// Attention la liste peut être vide !
-// version itérative
+void afficheElement(Liste l){
+	printf("%s, %s, %s, %s, %s, %s, %s\n", l->name, l-> artist, l->album, l->genre, l->discNumber, l->trackNumber, l->year);
+}
+
 void afficheListe_i(Liste l) {
 	Liste p = l;
 
 	while(!estVide(p)){
-		afficheElement(l->name);
-		afficheElement(l->artist);
-		afficheElement(l->album);
-		afficheElement(l->genre);
-		afficheElement(l->discNumber);
-		afficheElement(l->trackNumber);
-		afficheElement(l->year);
-		printf("\n");
+		afficheElement(l);
 		p=p->suiv;
 	}
-	printf("\n");
 }
 
 // version recursive
 void afficheListe_r(Liste l) {
-	if (!estVide(l)){
-		afficheElement(l->name);
-		afficheElement(l->artist);
-		afficheElement(l->album);
-		afficheElement(l->genre);
-		afficheElement(l->discNumber);
-		afficheElement(l->trackNumber);
-		afficheElement(l->year);
-		printf("\n");
-		afficheListe_r(l->suiv);
+	Liste p = l;
+	if (!estVide(p)){
+		afficheElement(p);
+		afficheListe_r(p->suiv);
 	}else{
 		printf("\n");
 	}
 }
 
+void detruireElement(Element e){
+	free(e);
+}
 
 // Détruit tous les éléments de la liste l
 // version itérative
@@ -77,7 +65,13 @@ void detruire_i(Liste l) {
 	while(!estVide(l)){
 		p=l;
 		l=l->suiv;
-		detruireElement(p->name, p->artist, p->album, p->genre, p->discNumber, p->trackNumber, p->year);
+		detruireElement(p->name);
+		detruireElement(p->artist);
+		detruireElement(p->album);
+		detruireElement(p->genre);
+		detruireElement(p->discNumber);
+		detruireElement(p->trackNumber);
+		detruireElement(p->year);
 		free(p);
 	}
 }
@@ -86,41 +80,54 @@ void detruire_i(Liste l) {
 void detruire_r(Liste l) {
 	if (!estVide(l)){
 		detruire_r(l->suiv);
-		detruireElement(l->name, l->artist, l->album, l->genre, l->discNumber, l->trackNumber, l->year);
+		detruireElement(l->name);
+		detruireElement(l->artist);
+		detruireElement(l->album);
+		detruireElement(l->genre);
+		detruireElement(l->discNumber);
+		detruireElement(l->trackNumber);
+		detruireElement(l->year);
 		free(l);
 	}
 }
 
 // retourne la liste dans laquelle l'élément v a été ajouté en fin
 // version itérative
-Liste ajoutFin_i(Element name, Element artist, Element album, Element genre, Element discNumber, Element trackNumber, Element year, Liste l) {
+Liste ajoutFin_i(Music* m, Liste l) {
 	Liste p = l;
 
 	if(estVide(l)){
-		return creer(name, artist, album, genre, discNumber, trackNumber, year);
+		return creer(m->name, m->artist, m->album, m->genre, m->discNumber, m->trackNumber, m->year);
 	}
 
 	//temp !=NULL
 	while(!estVide(p->suiv)){
 		p = p->suiv;
 	}
-	p->suiv = creer(name, artist, album, genre, discNumber, trackNumber, year);
+	p->suiv = creer(m->name, m->artist, m->album, m->genre, m->discNumber, m->trackNumber, m->year);
 
 	return l;
 }
 
 // version recursive
-Liste ajoutFin_r(Element name, Element artist, Element album, Element genre, Element discNumber, Element trackNumber, Element year, Liste l) {
+Liste ajoutFin_r(Music* m, Liste l) {
 	if(estVide(l)){
-		return creer(name, artist, album, genre, discNumber, trackNumber, year);
+		return creer(m->name, m->artist, m->album, m->genre, m->discNumber, m->trackNumber, m->year);
 	}else{
-		l->suiv = ajoutFin_r(v, l->suiv);
+		l->suiv = ajoutFin_r(m, l->suiv);
 	}
 	return l;
 }
 
 
-
+bool equalsElement(Element e1, Element e2){
+	if (e1 == e2){
+		return true;
+	}else{
+		return false;
+	}
+	
+}
 // Retourne un pointeur sur l'élément de la liste l contenant la valeur v ou NULL
 // version itérative
 Liste cherche_i(Element name, Element artist, Element album, Liste l) {
@@ -194,13 +201,7 @@ void afficheEnvers_r(Liste l) {
 	if(!estVide(l)){
 		if(!estVide(l->suiv)){
 			afficheEnvers_r(l->suiv);
-		afficheElement(l->name);
-		afficheElement(l->artist);
-		afficheElement(l->album);
-		afficheElement(l->genre);
-		afficheElement(l->discNumber);
-		afficheElement(l->trackNumber);
-		afficheElement(l->year);
+		afficheElement(l);
 		printf("\n");
 		}
 	}
